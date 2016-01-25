@@ -1,6 +1,8 @@
 #!/bin/sh
-
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
 echo "Argument: $1\n\n"
+
 if [ -n "$1" ] && [ "$1" = "linux" ]; then
 	echo "Building on Linux"
 	./install_software.sh
