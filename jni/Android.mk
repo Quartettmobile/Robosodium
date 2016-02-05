@@ -19,30 +19,33 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := sodium
 
 ifeq ($(TARGET_ARCH_ABI), armeabi)
-	LOCAL_SRC_FILES := ../libsodium/libsodium-android-armv6/lib/libsodium.a
+	LOCAL_SRC_FILES := ../libsodium/libsodium-android-armv6/lib/libsodium.so
 endif
 
 ifeq ($(TARGET_ARCH_ABI), armeabi-v7a)
-	LOCAL_SRC_FILES := ../libsodium/libsodium-android-armv7-a/lib/libsodium.a
+	LOCAL_SRC_FILES := ../libsodium/libsodium-android-armv7-a/lib/libsodium.so
 endif
 
 ifeq ($(TARGET_ARCH_ABI), x86)
-	LOCAL_SRC_FILES := ../libsodium/libsodium-android-i686/lib/libsodium.a
+	LOCAL_SRC_FILES := ../libsodium/libsodium-android-i686/lib/libsodium.so
 endif
 
 ifeq ($(TARGET_ARCH_ABI), mips)
-	LOCAL_SRC_FILES := ../libsodium/libsodium-android-mips32/lib/libsodium.a
+	LOCAL_SRC_FILES := ../libsodium/libsodium-android-mips32/lib/libsodium.so
 endif
+
+$(info "Using SRC $(LOCAL_SRC_FILES)")
 
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := kaliumjni
-LOCAL_SRC_FILES :=  \
-sodium_wrap.c
+LOCAL_SRC_FILES := sodium_wrap.c
 
-LOCAL_CFLAGS   += -Wall -g -pedantic -std=c99
+LOCAL_CFLAGS 			+= -Wall -g -pedantic -std=c99
+LOCAL_CPPFLAGS			:= -std=c++14 -Wno-extern-c-compat -fcxx-modules
+
 
 ifeq ($(TARGET_ARCH_ABI), armeabi)
 	LOCAL_C_INCLUDES += ../libsodium/libsodium-android-armv6/include ../libsodium/libsodium-android-armv6/include/sodium
@@ -60,6 +63,6 @@ ifeq ($(TARGET_ARCH_ABI), mips)
 	LOCAL_C_INCLUDES += ../libsodium/libsodium-android-mips32/include ../libsodium/libsodium-android-mips32/include/sodium
 endif
 
-LOCAL_STATIC_LIBRARIES += android_native_app_glue sodium
+LOCAL_STATIC_LIBRARIES += sodium
 
 include $(BUILD_SHARED_LIBRARY)
